@@ -3,7 +3,7 @@ from enum import Enum
 from datetime import datetime
 from typing import Union
 
-from domain.exceptions.exception import InvalidStatusException
+from src.domain.exceptions.exception import InvalidStatusException
 
 @dataclass(frozen=True)
 class Ticket:
@@ -17,7 +17,7 @@ class Ticket:
     - open() -> sets the ticket to Open status
     - start() -> sets the ticket to In Progress
     - close() -> sets the ticket to Closed
-    - reopen() -> sets the ticket to Reopen
+    - reopened() -> sets the ticket to Reopen
     - resolved() -> sets the ticket to Resolved
     """
 
@@ -78,25 +78,25 @@ class Ticket:
 
     def start(self) -> Ticket:
         if self._status == self.Status.CLOSED:
-            raise InvalidStatusException("Impssible de démarrer un ticket déjà fermé.")
+            raise InvalidStatusException("Impossible de démarrer un ticket déjà fermé.")
         
         if self._status == self.Status.RESOLVED:
-            raise InvalidStatusException("Impssible de démarrer un ticket déjà résolu.")
+            raise InvalidStatusException("Impossible de démarrer un ticket déjà résolu.")
         return self._replace(status=self.Status.IN_PROGRESS)
     
     def close(self) -> Ticket:
         if self._status != self.Status.RESOLVED:
-            raise InvalidStatusException("Impssible de fermer un ticket non résolu.")
+            raise InvalidStatusException("Impossible de fermer un ticket non résolu.")
         return self._replace(status=self.Status.CLOSED)
     
     def reopened(self) -> Ticket:
         if self._status != self.Status.CLOSED:
-            raise InvalidStatusException("Impssible de reouvrir un ticket non fermé.")
+            raise InvalidStatusException("Impossible de reouvrir un ticket non fermé.")
         return self._replace(status=self.Status.REOPENED)
     
     def resolved(self) -> Ticket:
         if self._status != self.Status.IN_PROGRESS:
-            raise InvalidStatusException("Impssible de résoudre un ticket non démarré.")
+            raise InvalidStatusException("Impossible de résoudre un ticket non démarré.")
         return self._replace(status=self.Status.RESOLVED)
     
     # Internal method for creating a new modified instance
