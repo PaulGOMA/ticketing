@@ -79,6 +79,7 @@ class Ticket:
     def start(self) -> Ticket:
         if self._status == self.Status.CLOSED:
             raise InvalidStatusException("Impssible de démarrer un ticket déjà fermé.")
+        
         if self._status == self.Status.RESOLVED:
             raise InvalidStatusException("Impssible de démarrer un ticket déjà résolu.")
         return self._replace(status=self.Status.IN_PROGRESS)
